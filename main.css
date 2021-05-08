@@ -1,0 +1,167 @@
+/* .time {
+    display: none;
+} */
+
+body {
+    background-color: #EBECF0;
+}
+h2 {
+    text-align: center;
+}
+
+/* list flex box  */
+.container {
+    display: flex;
+    flex-direction: row;
+    /* background-color: crimson; */
+    margin: 10px;
+}
+.list-item {
+    flex-grow: 1;
+}
+
+/* list item flex box */
+.container-list-task {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 1.5px;
+    padding-right: 1px;
+}
+.list-task-item {
+    flex-grow: 1;
+}
+.list-task-item-content {
+    flex-grow: 4;
+    margin-top: 1.5px;
+}
+
+ol li{
+    list-style: none;
+ }
+ ol li div{
+    display: inline;
+    margin-left: 0.5em;
+ }
+div[id*="li-"]{
+    border: 1px solid black;
+    margin-bottom: 0.3em;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px grey;
+    /* width: 22em; */
+}
+
+    /* border: 1px solid blue; */
+
+.dragButton {
+    display: inline;
+    margin-right: 0.06em;
+    margin-top:0.19em;
+    font-weight: 700;
+}
+.deleteButton {
+    display: inline;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 1px;
+}
+
+div[id*="list-task"]{
+    display: inline-block;
+    border-radius: 5px;
+    width: 18em;
+}
+
+.dropdown {
+    will-change: transform;
+}
+
+
+.grid-container-cal {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    grid-column-gap: 0.6em;
+    background-color: #606A72;
+    padding: 0.6em;
+    margin: 1em;
+    border-radius: 10px;
+}
+.grid-item-cal {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-size: 20px;
+    text-align: center;
+}
+
+div[id*="-dropzone-"] div[id*="task"] {
+    /* border: 1px solid black; */
+    border-radius: 10px;
+	transform: translate(0, 0);
+    margin-top: 0.15em;
+}
+
+#done-list {
+    text-decoration: line-through;
+}
+
+#submit-task {
+    display: block;
+}
+
+
+
+/* input classes */
+
+form {
+    border: 2px solid #606A72;
+    border-radius: 10px;
+    width: 35em;
+    padding-top: 2em;
+    padding-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-left: 3em; */
+}
+
+.datetime-input-container {
+    display: flex;
+    margin-left: 5em;
+}
+
+.input-todo {
+    margin-bottom: 0.5em;
+    margin-left: 5em;
+    width: 25em;
+}
+
+.input-time {
+    margin-bottom: 0.5em;
+    width: 15em;
+}
+
+.dropdown-am-or-pm {
+    margin-left: 1em;
+}
+
+.dropdown-day {
+    margin-left: 1em;
+}
+
+.add-button {
+    display: block;
+    margin-bottom: 0.5em;
+    margin-left: 5em;
+}
+
+.detail-time-toggle {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3em;
+}
+
+.toggle  {
+    text-align: center;
+    margin-bottom: 6em;
+}
