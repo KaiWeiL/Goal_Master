@@ -3,6 +3,7 @@ let isDetailTime;
 let taskNumber;
 let taskInfoObjArray;
 let doneTaskArray = [];
+let appMsg;
 
 // // toggle time display
 // let displayTimeRadioArray = document.querySelectorAll('.display-time-radio input');
@@ -418,25 +419,73 @@ function getFormData(e){
     taskInfoObjArray[taskNumber]['done'] = false;
     return taskInfoObjArray[taskNumber];
 }
-function formSubmit(e){     // event listener
-    let div = createTask(getFormData(e), 'new', 'cal');
-    appendTaskToCalendar(taskInfoObjArray[taskNumber-1], div);
-    addDragListener(div);
-    // The following line is somehow error.
-    // appendTaskToCalendar(taskInfoObjArray[taskNumber-1], createTask(getFormData(e)));
-    let divList = createTask(taskInfoObjArray[taskNumber-1], 'old', 'list');
-    appendTaskToTaskList(divList);
-    addTaskAndTaskListListener(divList.parentElement);
-    let deleteButton = divList.nextElementSibling;
-    deleteButton.addEventListener('click', deleteButtonHandler);
-    deleteButton.addEventListener('mouseover', deleteButtonHoverHandler);
-    deleteButton.addEventListener('mouseleave', deleteButtonMouseLeaveHandler);
-    addTaskClickDoneListener('new', 'cal');
-    addTaskClickDoneListener('new', 'list');
+
+function verifyForm(){
+
+    let isVerifiedSucceeded = true;
+    let taskName = document.querySelector('#task-submit #task-input');
+    let taskTime = document.querySelector('#task-submit #task-time');
+
+    if(taskName.value == ''){
+        appMsg = appMsg.concat('- Task item name cannot be empty!</br>');
+        isVerifiedSucceeded = false;
+    }
+
+    // regular expression for matchin single digit
+    if(taskTime.value == ''){
+        appMsg = appMsg.concat('- Please specify the task time!</br>');
+        isVerifiedSucceeded = false;
+    }
+    if(taskTime.value != ''){
+        if(!/^[0-9]{1}$/.test(taskTime.value) && !/^[0-9]{2}$/.test(taskTime.value)){
+            appMsg = appMsg.concat('- Please enter a number (digit(s) only) to specify the time!</br>');
+            isVerifiedSucceeded = false;
+        }
+        if(parseInt(taskTime.value) < 0 || parseInt(taskTime.value) > 12 ){
+            appMsg = appMsg.concat('- Please keep the time in range 0 - 12!</br>');
+            isVerifiedSucceeded = false;
+        }
+    }
+
+
+    if(selectedDay == 'day'){
+        appMsg = appMsg.concat('- Please specify the date!</br>')
+        isVerifiedSucceeded = false;
+    }
+
+    if(isVerifiedSucceeded == false){
+        document.querySelector('#appMsg').innerHTML = appMsg;
+        appMsg = '';
+    }
+
+    return isVerifiedSucceeded;
+
 }
+
+function formSubmit(e){     // event listener
+    if(verifyForm()){
+        document.querySelector('#appMsg').innerHTML = '';
+        let div = createTask(getFormData(e), 'new', 'cal');
+        appendTaskToCalendar(taskInfoObjArray[taskNumber-1], div);
+        addDragListener(div);
+        // The following line is somehow error.
+        // appendTaskToCalendar(taskInfoObjArray[taskNumber-1], createTask(getFormData(e)));
+        let divList = createTask(taskInfoObjArray[taskNumber-1], 'old', 'list');
+        appendTaskToTaskList(divList);
+        addTaskAndTaskListListener(divList.parentElement);
+        let deleteButton = divList.nextElementSibling;
+        deleteButton.addEventListener('click', deleteButtonHandler);
+        deleteButton.addEventListener('mouseover', deleteButtonHoverHandler);
+        deleteButton.addEventListener('mouseleave', deleteButtonMouseLeaveHandler);
+        addTaskClickDoneListener('new', 'cal');
+        addTaskClickDoneListener('new', 'list');
+    }
+}
+
 function initialize(){
     wayOfDisplayTime = 'auto';
     isDetailTime = false;
+    appMsg = '';
     
     calendarGenerator();
     addDropzoneListener();
@@ -592,11 +641,14 @@ function appendTaskToTaskList(divList){
     imgDrag.setAttributeNode(imgWidthAtr);
     imgDrag.setAttributeNode(imgHeightAtr);
     imgDrag.setAttributeNode(dragClassAtr);
+    imgDrag.addEventListener('mouseover', moveButtonHoverHandler);
+    imgDrag.addEventListener('mouseleave', moveButtonMouseLeaveHandler);
+
 
     divItem.appendChild(imgDrag);
     divItem.appendChild(divList);
     divItem.appendChild(divDelete);
-                                            imgDrag.draggable = true;
+    imgDrag.draggable = true;
     document.querySelector('#task-list').appendChild(divItem);
 }
 
@@ -635,10 +687,23 @@ function appendTaskToDoneList(divList){
     document.querySelector('#done-list').appendChild(li);
 }
 
+function moveButtonHoverHandler(e){
+    e.target.style.cursor = 'grab';
+    e.target.style.borderRadius = '10px'
+    e.target.style.backgroundColor = '#80a8c5'
+    e.target.style.boxShadow = '2px 2px 2px grey';
+}
+function moveButtonMouseLeaveHandler(e){
+    e.target.style.cursor = '';
+    e.target.style.borderRadius = '0px'
+    e.target.style.backgroundColor = ''
+    e.target.style.boxShadow = '';
+}
 function deleteButtonHoverHandler(e){
     e.stopPropagation();
     e.target.style.backgroundColor = '#B50717';
     e.target.style.color = 'white';
+    e.target.style.cursor = 'pointer';
     // e.target.style.borderRadius = '50px';
     e.target.style.boxShadow = '2px 2px 2px grey';
 }
@@ -646,6 +711,7 @@ function deleteButtonMouseLeaveHandler(e){
     e.stopPropagation();
     e.target.style.backgroundColor = '';
     e.target.style.color = 'black';
+    e.target.style.cursor = '';
     e.target.style.boxShadow = '';
 }
 function deleteButtonHandler(e){
@@ -886,7 +952,7 @@ function addTaskClickDoneListener(newOrOld, type){
 // js bootstrap styling ---------
 
 // Day dropdown menu
-let selectedDay;
+let selectedDay = 'day';
 let daySelectionArray = document.querySelectorAll('#task-date a');
 daySelectionArray.forEach(element=>element.addEventListener('click', changeToSelectedDay));
 function changeToSelectedDay(e){
