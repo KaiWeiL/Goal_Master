@@ -1,5 +1,5 @@
 # Goal Master
-A to-do list application featuring prioritization with a detailed time management toggle for a given week.
+A weekly to-do list JavaScript application featuring sortable priorities, a draggable calendar and a detailed time display toggle
 
 ## Draggable Items in Calendar
 ![Draggable Calendar](https://github.com/KaiWeiL/Goal_Master/blob/master/intro/draggable_cal.gif)
